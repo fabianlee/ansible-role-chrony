@@ -40,14 +40,14 @@
 
 
 
-- name: test chrony against ntp server
-  become: yes
-  command: chronyd -q '{{item}}'
-  register: chrony_results
-  with_items: "{{wtd_chrony_cfg_servers}}"
-  when: chrony_configured.changed
-
-- name: show chrony test against ntp server
-  debug: msg="{{item.stdout_lines}}"
-  with_items: "{chrony_results.results}}"
-  when: chrony_configured.changed
+#- name: test chrony against ntp server
+#  become: yes
+#  command: chronyd -q '{{item}}'
+#  register: chrony_results
+#  with_items: "{{wtd_chrony_cfg_servers}}"
+#  when: chrony_configured.changed
+#
+#- name: show chrony test against ntp server
+#  debug: msg="{{item.stdout_lines}}"
+#  with_items: "{chrony_results.results}}"
+#  when: chrony_configured.changed
