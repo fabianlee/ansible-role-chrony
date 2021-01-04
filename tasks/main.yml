@@ -19,8 +19,35 @@
     mode: 0644
   become: yes
   notify: Restart chronyd
+  register: chrony_configured
   tags:
     - time
     - ntp
     - common
     - config
+
+- name: chrony tracking
+  command: chronyc tracking
+  register: chrony_tracking_results
+- name: show chonry tracking
+  debug: msg="{{chrony_tracking_results}}"
+
+
+
+- name: show chrony sources
+  command: chronyc sources
+  when: chrony_configured.changed
+
+
+
+- name: test chrony against ntp server
+  become: yes
+  command: chronyd -q '{{item}}'
+  register: chrony_results
+  with_items: "{{wtd_chrony_cfg_servers}}"
+  when: chrony_configured.changed
+
+- name: show chrony test against ntp server
+  debug: msg="{{item.stdout_lines}}"
+  with_items: "{chrony_results.results}}"
+  when: chrony_configured.changed
