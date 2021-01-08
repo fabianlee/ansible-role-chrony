@@ -9,7 +9,10 @@
 - name: set default name for chrony service on older xenial
   set_fact:
     chronyd_service_name: chrony
-  when: ansible_distribution_major_version == 16
+  when: ansible_distribution_major_version|int == 16
+
+- name: show final chrony service name being used
+  debug: msg="final service name {{chronyd_service_name}}"
 
 - name: Install chrony
   package:
